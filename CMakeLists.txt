@@ -1,8 +1,14 @@
 PROJECT(TrollEdit) 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.0)
+
+# set default cmake build type (Debug Release)
+IF( NOT CMAKE_BUILD_TYPE )
+  SET( CMAKE_BUILD_TYPE "Debug" )
+ENDIF()
 
 # Settings
 OPTION(USE_JIT "Use LuaJIT instead of Lua" TRUE)
+#OPTION(USE_JIT2 "Use LuaJIT 2beta instead of LuaJIT 1.1.6" TRUE)
 
 # Override default install path
 IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -10,16 +16,32 @@ IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ENDIF()
 
 # Default Install prefix
+#SET(READLINE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/TrollEdit)
+#SET(READLINE_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/TrollEdit)
 
 # Build lua and lpeg libs
-IF (USE_JIT)
-	INCLUDE_DIRECTORIES(src/luajit-1.1.6/src)
-	SUBDIRS(src/luajit-1.1.6)
-ELSE()
-	INCLUDE_DIRECTORIES(src/lua-5.1.4/src)
-	SUBDIRS(src/lua-5.1.4)
-ENDIF()
-SUBDIRS(src/lpeg-0.9)
+#IF(USE_JIT)
+#    INCLUDE_DIRECTORIES(src/luajit-1.1.6/src)
+#    SUBDIRS(src/luajit-1.1.6)
+#ELSEIF(USE_JIT2)
+#    INCLUDE_DIRECTORIES(src/luajit-2.0/src)
+#    SUBDIRS(src/luajit-2.0)
+#ELSE()
+#    INCLUDE_DIRECTORIES(src/lua-5.1.4/src)
+#    SUBDIRS(src/lua-5.1.4)
+#ENDIF()
+#SUBDIRS(src/lpeg-0.9)
+
+ INCLUDE_DIRECTORIES(src/lua/src)
+ SUBDIRS(src/lua)
+
+# INCLUDE_DIRECTORIES(src/luajit/src)
+# SUBDIRS(src/luajit)
+
+ INCLUDE_DIRECTORIES(src/lpeg/src)
+ SUBDIRS(src/lpeg)
+ 
+
 
 # Find dependencies
 FIND_PACKAGE(Qt4 REQUIRED)
@@ -39,7 +61,7 @@ QT4_WRAP_CPP(TROLL_MOC ${TROLL_H})
 
 # Build TrollEdit, include lpeg into it.
 ADD_EXECUTABLE(trolledit ${TROLL_CPP} ${TROLL_MOC} ${TROLL_RC})
-TARGET_LINK_LIBRARIES(trolledit ${QT_LIBRARIES} lua lpeg)
+TARGET_LINK_LIBRARIES(trolledit ${QT_LIBRARIES} lua lpeg luajit)
 
 # Install
 INSTALL(TARGETS trolledit DESTINATION .)
