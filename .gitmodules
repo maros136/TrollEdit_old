@@ -1,0 +1,9 @@
+[submodule "src\\luajit"]
+	path = src\\luajit
+	url = git://github.com/LuaDist/luajit.git
+[submodule "src\\lua"]
+	path = src\\lua
+	url = git://github.com/LuaDist/lua.git
+[submodule "src\\lpeg"]
+	path = src\\lpeg
+	url = git://github.com/LuaDist/lpeg.git
